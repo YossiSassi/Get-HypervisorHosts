@@ -1,12 +1,13 @@
 function Get-HypervisorHosts {
 <#
 .SYNOPSIS
-Get-HypervisorHosts - Detects if host(s) are running common Hypervisors (e.g. Hyper-V, VMware, VirtualBox, WSL etc.) to assist hunt for attackers carrying out tasks from VM without logging, AV or EDR monitoring.
+Get-HypervisorHosts - Detects if host(s) are running common Hypervisors (e.g. Hyper-V, VMware, VirtualBox, WSL, Windows SandBox etc.) to assist hunt for attackers carrying out tasks from whithin a VM to evade logging/AV/EDR monitoring etc.
 
 Function: Get-HypervisorHosts
 Author: 1nTh35h311 (yossis@protonmail.com, #Yossi_Sassi)
 
-Version: 1.1
+Version: 1.2
+v1.2 - Added detection for Windows 10/11 sandbox (Disposable Client VM)
 v1.1 - Added help + Changed csv output to 'write as we go' rather than wait until done + Added OS version information + Added optional parameter that gets interactively logged-on user(s).
 v1.0 - initial script
 
@@ -206,6 +207,20 @@ $hypervisorIndicators = {
                     OSInfo     = $OSInfo
                     LoggedOnUser = $LoggedOnUser
                 }
+            }
+        }
+
+        # Windows Sandbox (added v1.2)
+        $ResultSandBox = Get-WindowsOptionalFeature -Online -FeatureName "Containers-DisposableClientVM";
+        if ($ResultSandBox.State -eq "Enabled") {
+                $hostInfo += [PSCustomObject]@{
+                    Computer = $ComputerName
+                    Hypervisor = "Sandbox"
+                    Indicator  = $ResultSandBox.DisplayName
+                    Type       = "WindowsFeature"
+                    Status     = $ResultSandBox.State
+                    OSInfo     = $OSInfo
+                    LoggedOnUser = $LoggedOnUser
             }
         }
 
