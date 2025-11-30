@@ -6,8 +6,8 @@ Looks for Microsoft Hyper-V, VMware Workstation/Player (basic ESXi signals if ac
 <b>Note:</b> can use this script to evaluate anomalies such as detecting a hypervisor vendor that is not/should not be used in your environment, or, if VMs are installed and running on host that should not be hosting VMs (e.g. Laptop belonging to HR employee, basically Non-Dev/IT/Research etc.)<br>
 
 The parameter <b>ComputerName</b> defaults to local host. Any number of remote hosts can be queried using WinRM/PSremoting (usual especially in Active Directory domains).<br><br>
-The optional parameter <b>CsvOutputPath</b> cab be speficied to export results to a CSV file.<br><br>
-The optional parameter <b>GetLoggedOnUser</b> also gets the currently interactively logged-on user(s).<br>
+The optional parameter <b>CsvOutputPath</b> can be specified to export results to a CSV file.<br><br>
+The optional parameter <b>GetLoggedOnUser</b> gets the current interactively logged-on user(s).<br>
 ### Example: Get indicators from local host
 Import the module/function, and then run it straight forward without any parameters to get locally installed Hypervisors (screenshot from v1.0):<br>
 ```
